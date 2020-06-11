@@ -1,0 +1,15 @@
+@import 'Styles/_layout.scss';
+.App {
+  @include size;
+  .RouteHander {
+    @include size;
+  }
+}
+
+.ant-input{
+  // background:#666 !important;
+  border-radius: 5px !important;
+}
+.ant-input-password {
+  border-radius: 5px !important;
+}

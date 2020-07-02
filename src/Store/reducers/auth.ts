@@ -2,7 +2,7 @@ import { Map } from 'immutable';
 import { Action } from 'Structure/store';
 
 const initialState = Map({
-  userInfo: {},
+  autoInfo: {},
 });
 
 // user Reducer

@@ -8,7 +8,6 @@ import { debounce } from 'lodash';
 import setAuthInfo from 'Store/actions/auth';
 import $api from 'plugins/api';
 import Paths from 'Route/paths';
-import logo from 'assets/logo.png';
 import './style.scss';
 
 // const validateStr = val => {
@@ -23,9 +22,8 @@ import './style.scss';
 //     errorMsg: '請輸入',
 //   };
 // };
-
 const SignIn = (prop: any) => {
-  const { userInfo, SetAuthInfo } = prop; // user info
+  const { authInfo, SetAuthInfo, imgUrl } = prop; // user info
   // i18n
   const {
     intl: { formatMessage },
@@ -76,82 +74,88 @@ const SignIn = (prop: any) => {
 
   // Randor -------------------------------------------------------------------
   return (
-    <div className="SignIn">
-      <div className="login-bar">
-        <div className="item-box">
-          <img className="logo" src={logo} alt="Background" />
-          <div className="title"> CsoFans </div>
-          <div>{JSON.stringify(userInfo)}</div>
-          <Form
-            {...layout}
-            name="basic"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            {/* 信箱 */}
-            <Form.Item
-              name="account"
-              label={formatMessage({ id: 'signIn.account' })}
-              rules={[
-                {
-                  required: true,
-                  message: <FormattedMessage id="msg.inputAccount" />,
-                },
-              ]}
-              // validateStatus={account.validateStatus}
-              // help={account.errorMsg || ' '}
-            >
-              <Input
-                value={param.email}
-                placeholder={formatMessage({ id: 'msg.inputAccount' })}
-                onChange={e => {
-                  setParam({ ...param, email: e.target.value });
-                }}
-                autoComplete="current-account"
-              />
-            </Form.Item>
-            {/* 密碼 */}
-            <Form.Item
-              name="password"
-              label={formatMessage({ id: 'signIn.password' })}
-              rules={[
-                {
-                  required: true,
-                  message: <FormattedMessage id="msg.inputPassword" />,
-                },
-              ]}
-            >
-              <Input.Password
-                value={param.password}
-                placeholder={formatMessage({ id: 'msg.inputPassword' })}
-                autoComplete="current-password"
-                onChange={e => {
-                  setParam({ ...param, password: e.target.value });
-                }}
-              />
-            </Form.Item>
-            {/* 記住我 */}
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            {/* 送出 */}
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                SignIn
-              </Button>
-            </Form.Item>
-          </Form>
+    <div id="signIn" style={{ backgroundImage: `url(${imgUrl.backimg})` }}>
+      <div className="signIn-area">
+        {/* icon */}
+        <div className="icon">
+          <img className="icon-image" src={imgUrl.icon} alt="Background" />
+          <div className="logo">
+            <img className="logo-image" src={imgUrl.logo} alt="Background" />
+            <div className="text"> 後台 </div>
+          </div>
+          <div>{JSON.stringify(authInfo)}</div>
         </div>
+        {/* form */}
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          {/* 信箱 */}
+          <Form.Item
+            name="account"
+            label={formatMessage({ id: 'signIn.account' })}
+            rules={[
+              {
+                required: true,
+                message: <FormattedMessage id="msg.inputAccount" />,
+              },
+            ]}
+            // validateStatus={account.validateStatus}
+            // help={account.errorMsg || ' '}
+          >
+            <Input
+              value={param.email}
+              placeholder={formatMessage({ id: 'msg.inputAccount' })}
+              onChange={e => {
+                setParam({ ...param, email: e.target.value });
+              }}
+              autoComplete="current-account"
+            />
+          </Form.Item>
+          {/* 密碼 */}
+          <Form.Item
+            name="password"
+            label={formatMessage({ id: 'signIn.password' })}
+            rules={[
+              {
+                required: true,
+                message: <FormattedMessage id="msg.inputPassword" />,
+              },
+            ]}
+          >
+            <Input.Password
+              value={param.password}
+              placeholder={formatMessage({ id: 'msg.inputPassword' })}
+              autoComplete="current-password"
+              onChange={e => {
+                setParam({ ...param, password: e.target.value });
+              }}
+            />
+          </Form.Item>
+          {/* 記住我 */}
+          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+          {/* 送出 */}
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              SignIn
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );
 };
 
 // ============================================================================
-const mapStateToProps = ({ authReducer }: any) => {
+const mapStateToProps = ({ authReducer, commonReducer }: any) => {
   return {
-    userInfo: authReducer.get('userInfo'),
+    authInfo: authReducer.get('authInfo'),
+    imgUrl: commonReducer.get('imgUrl'),
   };
 };
 

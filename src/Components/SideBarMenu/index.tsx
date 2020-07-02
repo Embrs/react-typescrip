@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu } from 'antd';
 // import { MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import pages from 'Route/paths';
+import pages from 'plugins/route/paths';
 
 const { SubMenu } = Menu;
 

@@ -1,9 +1,9 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import './App.scss';
-import RouteHander from 'Route';
+import RouteHander from 'plugins/route';
 
-import routes from 'Route/routes';
+import routes from 'plugins/route/routes';
 
 // const ChangeLocale = (setLocale: any, locale: string) => {
 //   setLocale(locale);

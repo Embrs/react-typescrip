@@ -10,10 +10,10 @@
   .signIn-area {
     padding: 40px 40px;
     border-radius: 5px;
-    text-align: center;
     grid-column: 2;
     grid-row: 2;
     .icon {
+      text-align: center;
       .icon-image {
         width: 100px;
         height: 100px;
@@ -29,9 +29,34 @@
           margin-top: 13px;
           letter-spacing: 2px;
           font-size: 17px;
-          color: #666;
+          color: #7d96aa;
         }
       }
     }
+    .line {
+      padding-top: 40px;
+      margin: 10px 0;
+      border-bottom: 1px solid rgb(234, 241, 248);
+    }
+    .line-text {
+      text-align: center;
+      letter-spacing: 10px;
+      padding-left: 10px;
+      font-size: 16px;
+      color: #acb7cc;
+      
+    }
+    .form {
+      padding-top: 30px;
+      // antd
+      .ant-form-item-label > label {
+        color: #65b7d0;
+      }
+      .ant-btn-primary {
+        background-color: #68c2dd;
+        border-color: #68c2dd;
+      }
+    }
+    
   }
 }

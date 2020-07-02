@@ -1,0 +1,149 @@
+.g-pointer {
+  cursor: pointer;
+}
+.g-padding-top-5 {
+  padding-top: 5px;
+}
+
+.g-padding-top-10 {
+  padding-top: 10px;
+}
+.g-padding-top-15 {
+  padding-top: 15px;
+}
+.g-padding-top-20 {
+  padding-top: 20px;
+}
+.g-padding-top-25 {
+  padding-top: 25px;
+}
+.g-padding-top-30 {
+  padding-top: 30px;
+}
+
+
+.g-margin-top-5 {
+  margin-top: 5px;
+}
+.g-margin-top-10 {
+  margin-top: 10px;
+}
+.g-margin-top-20 {
+  margin-top: 20px;
+}
+.g-margin-top-30 {
+  margin-top: 30px;
+}
+.g-padding-top-40 {
+  padding-top: 40px;
+}
+
+.g-padding-left-5 {
+  padding-left: 5px;
+}
+.g-padding-left-10 {
+  padding-left: 10px;
+}
+.g-padding-left-15 {
+  padding-left: 15px;
+}
+.g-padding-left-20 {
+  padding-left: 20px;
+}
+.g-padding-left-25 {
+  padding-left: 25px;
+}
+.g-padding-left-30 {
+  padding-left: 30px;
+}
+.g-padding-left-40 {
+  padding-left: 40px;
+}
+.g-padding-left-50 {
+  padding-left: 50px;
+}
+.g-padding-right-15 {
+  padding-right: 15px;
+}
+.g-padding-right-20 {
+  padding-right: 20px;
+}
+.g-flex {
+  position: relative;
+  display: flex;
+}
+.g-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.g-row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.g-row-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.g-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // justify-content: space-around;
+}
+.g-row-warp {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.g-row-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.g-row-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.g-column {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+}
+
+.g-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.g-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+// 20200526_ian Add
+.g-row-inline {
+  display: inline-block;
+}
+
+.g-padding-right-30 {
+  padding-right: 30px;
+}
+.g-flex {
+  @include size;
+  @include flex;
+}
+
+.g-rotateX-180 {
+  transform: rotateX(180deg);
+}
+
+.g-rotateY-180 {
+  transform: rotateY(180deg);
+}

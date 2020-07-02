@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { debounce } from 'lodash';
 import setAuthInfo from 'Store/actions/auth';
 import $api from 'plugins/api';
-import Paths from 'Route/paths';
+import Paths from 'plugins/route/paths';
 import './style.scss';
 
 // const validateStr = val => {
@@ -22,8 +22,10 @@ import './style.scss';
 //     errorMsg: '請輸入',
 //   };
 // };
+
+// Main ======================================================================
 const SignIn = (prop: any) => {
-  const { authInfo, SetAuthInfo, imgUrl } = prop; // user info
+  const { SetAuthInfo, imgUrl } = prop; // auth info
   // i18n
   const {
     intl: { formatMessage },
@@ -31,16 +33,16 @@ const SignIn = (prop: any) => {
 
   const history = useHistory(); // 路由
 
-  // param 參數
-  const [param, setParam] = useState({ email: '', password: '' });
+  // params 取參數  設定參數
+  const [params, setParam] = useState({ email: '', password: '' });
 
   // 畫面結構 ------------------------------------------------------------------
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: { span: 3 },
+    wrapperCol: { span: 21 },
   };
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: { offset: 0, span: 24 },
   };
 
   // Method -------------------------------------------------------------------
@@ -49,27 +51,21 @@ const SignIn = (prop: any) => {
     const {
       data,
       status: { code },
-    }: any = await $api.SignIn({
-      email: 'harry@axolotl.com.tw',
-      password: '111111',
-    });
+    }: any = await $api.SignIn(params);
     if (code === 0) {
       SetAuthInfo(data);
       history.push(Paths.Dashboard);
     }
   };
-  // 防連點
-  const SleepClick = debounce((fn: Function) => {
-    fn();
-  }, 1000);
 
   // 驗證成功
-  const onFinish = (values: any) => {
-    SleepClick(ApiSignIn);
-  };
+  const onFinish = debounce(() => {
+    ApiSignIn();
+  }, 1000);
+
   // 驗證失敗
-  const onFinishFailed = (values: any) => {
-    message.error('登入失敗');
+  const onFinishFailed = () => {
+    // message.error('請填入資料');
   };
 
   // Randor -------------------------------------------------------------------
@@ -81,36 +77,41 @@ const SignIn = (prop: any) => {
           <img className="icon-image" src={imgUrl.icon} alt="Background" />
           <div className="logo">
             <img className="logo-image" src={imgUrl.logo} alt="Background" />
-            <div className="text"> 後台 </div>
+            <div className="text"> 管理後台 </div>
           </div>
-          <div>{JSON.stringify(authInfo)}</div>
+          {/* <div>{JSON.stringify(authInfo)}</div> */}
         </div>
+        <div className="line"> </div>
+        <div className="line-text"> 一般登入 </div>
         {/* form */}
         <Form
           {...layout}
+          className="form"
           name="basic"
-          initialValues={{ remember: true }}
+          colon={false} // 冒號
+          hideRequiredMark // 必填＊隱藏
+          initialValues={{ rememberCheckBox: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
           {/* 信箱 */}
           <Form.Item
-            name="account"
-            label={formatMessage({ id: 'signIn.account' })}
+            name="email"
+            label="信箱"
             rules={[
               {
                 required: true,
-                message: <FormattedMessage id="msg.inputAccount" />,
+                message: <FormattedMessage id="msg.inputEmail" />,
               },
             ]}
             // validateStatus={account.validateStatus}
             // help={account.errorMsg || ' '}
           >
             <Input
-              value={param.email}
-              placeholder={formatMessage({ id: 'msg.inputAccount' })}
+              value={params.email}
+              placeholder={formatMessage({ id: 'msg.inputEmail' })}
               onChange={e => {
-                setParam({ ...param, email: e.target.value });
+                setParam({ ...params, email: e.target.value });
               }}
               autoComplete="current-account"
             />
@@ -118,7 +119,7 @@ const SignIn = (prop: any) => {
           {/* 密碼 */}
           <Form.Item
             name="password"
-            label={formatMessage({ id: 'signIn.password' })}
+            label="密碼"
             rules={[
               {
                 required: true,
@@ -127,24 +128,26 @@ const SignIn = (prop: any) => {
             ]}
           >
             <Input.Password
-              value={param.password}
+              value={params.password}
               placeholder={formatMessage({ id: 'msg.inputPassword' })}
               autoComplete="current-password"
               onChange={e => {
-                setParam({ ...param, password: e.target.value });
+                setParam({ ...params, password: e.target.value });
               }}
             />
           </Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            登入
+          </Button>
           {/* 記住我 */}
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
+          <Form.Item
+            {...tailLayout}
+            name="rememberCheckBox"
+            valuePropName="checked"
+          >
+            <Checkbox>記住我</Checkbox>
           </Form.Item>
           {/* 送出 */}
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              SignIn
-            </Button>
-          </Form.Item>
         </Form>
       </div>
     </div>

@@ -3,7 +3,7 @@ import Dashboard from 'Pages/Dashboard';
 import Page1 from 'Pages/Page1';
 import Page2 from 'Pages/Page2';
 import Page3 from 'Pages/Page3';
-import paths from 'Route/paths';
+import paths from 'plugins/route/paths';
 
 const routes = [
   {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import RouteHander from '../../Route';
-import Menutest from '../../Components/SideBarMenu';
+import RouteHander from 'plugins/route';
+import Menutest from 'Components/SideBarMenu';
 
 const UnMount = () => {
 };

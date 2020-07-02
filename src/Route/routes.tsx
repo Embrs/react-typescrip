@@ -1,4 +1,4 @@
-import Login from 'Pages/Login';
+import SignIn from 'Pages/SignIn';
 import Dashboard from 'Pages/Dashboard';
 import Page1 from 'Pages/Page1';
 import Page2 from 'Pages/Page2';
@@ -7,10 +7,10 @@ import paths from 'Route/paths';
 
 const routes = [
   {
-    path: paths.Login,
-    component: Login,
+    path: paths.SignIn,
+    component: SignIn,
     exact: true,
-    breadcrumbName: 'Login',
+    breadcrumbName: 'SignIn',
     role: 'default',
   },
 

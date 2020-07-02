@@ -13,8 +13,8 @@ const MenuTest = () => {
       <Menu.Item key="mail">
         <div>
           {/* <MailOutlined /> */}
-          <Link className="nav-link" to={pages.Login}>
-            Login
+          <Link className="nav-link" to={pages.SignIn}>
+            SignIn
           </Link>
         </div>
       </Menu.Item>

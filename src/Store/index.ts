@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import commonReducer from 'Store/reducers/common';
-import userReducer from 'Store/reducers/user';
+import authReducer from 'Store/reducers/auth';
 
 const rootReducer = combineReducers({
   commonReducer,
-  userReducer,
+  authReducer,
 });
 
 export default createStore(rootReducer, composeWithDevTools());

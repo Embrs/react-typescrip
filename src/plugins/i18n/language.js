@@ -1,10 +1,10 @@
 /* eslint-disable */
 module.exports = {
   'app.learn':          ['測試 {name}', 'Test {name}'],
-  login:                ['登入', 'Login'],
-  'login.account':      ['帳號', 'Account'],
-  'login.email':        ['信箱', 'Email'],
-  'login.password':     ['密碼', 'Password'],
+  signIn:               ['登入', 'SignIn'],
+  'signIn.account':     ['帳號', 'Account'],
+  'signIn.email':       ['信箱', 'Email'],
+  'signIn.password':    ['密碼', 'Password'],
   'msg.inputAccount':   ['請輸入帳號', 'Please input your username'],
   'msg.inputPassword':  ['請輸入密碼', 'Please input your password'],
   'success':            ['成功', 'Success'],

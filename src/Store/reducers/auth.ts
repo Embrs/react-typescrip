@@ -8,8 +8,8 @@ const initialState = Map({
 // user Reducer
 export default (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'SET_USER_INFO': {
-      return state.set('userInfo', action.payload);
+    case 'SET_AUTH_INFO': {
+      return state.set('authInfo', action.payload);
     }
     default:
       return state;

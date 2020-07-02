@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import { ConfigProvider } from 'antd';
 
-import LocaleMsg from 'I18n';
+import LocaleMsg from 'plugins/i18n';
 import store from 'Store';
 import App from 'App';
 import * as serviceWorker from './serviceWorker';

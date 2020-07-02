@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ToQuerystr, Has } from 'Utils';
 import { message } from 'antd';
 // import LocaleMsg from 'I18n';
-import NetErrorCode from './ErrorCode/net';
+// import NetErrorCode from './ErrorCode/net';
 import SysErrorCord from './ErrorCode/system';
 import config from './config';
 

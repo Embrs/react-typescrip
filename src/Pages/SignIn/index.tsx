@@ -4,9 +4,9 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { debounce, Object } from 'lodash';
-import setUserInfo from 'Store/actions/user';
-import Api from 'Api/service';
+import { debounce } from 'lodash';
+import setAuthInfo from 'Store/actions/auth';
+import $api from 'plugins/api';
 import Paths from 'Route/paths';
 import logo from 'assets/logo.png';
 import './style.scss';
@@ -24,8 +24,8 @@ import './style.scss';
 //   };
 // };
 
-const Login = (prop: any) => {
-  const { userInfo, SetUserInfo } = prop; // user info
+const SignIn = (prop: any) => {
+  const { userInfo, SetAuthInfo } = prop; // user info
   // i18n
   const {
     intl: { formatMessage },
@@ -34,7 +34,7 @@ const Login = (prop: any) => {
   const history = useHistory(); // 路由
 
   // param 參數
-  const [param, setParam] = useState({ account: '', password: '' });
+  const [param, setParam] = useState({ email: '', password: '' });
 
   // 畫面結構 ------------------------------------------------------------------
   const layout = {
@@ -47,13 +47,16 @@ const Login = (prop: any) => {
 
   // Method -------------------------------------------------------------------
   // 登入 API
-  const ApiLogin = async () => {
+  const ApiSignIn = async () => {
     const {
       data,
       status: { code },
-    }: any = await Api.Login({ account: 'admin', password: '9527' });
+    }: any = await $api.SignIn({
+      email: 'harry@axolotl.com.tw',
+      password: '111111',
+    });
     if (code === 0) {
-      SetUserInfo(data);
+      SetAuthInfo(data);
       history.push(Paths.Dashboard);
     }
   };
@@ -64,7 +67,7 @@ const Login = (prop: any) => {
 
   // 驗證成功
   const onFinish = (values: any) => {
-    SleepClick(ApiLogin);
+    SleepClick(ApiSignIn);
   };
   // 驗證失敗
   const onFinishFailed = (values: any) => {
@@ -73,7 +76,7 @@ const Login = (prop: any) => {
 
   // Randor -------------------------------------------------------------------
   return (
-    <div className="Login">
+    <div className="SignIn">
       <div className="login-bar">
         <div className="item-box">
           <img className="logo" src={logo} alt="Background" />
@@ -89,7 +92,7 @@ const Login = (prop: any) => {
             {/* 信箱 */}
             <Form.Item
               name="account"
-              label={formatMessage({ id: 'login.account' })}
+              label={formatMessage({ id: 'signIn.account' })}
               rules={[
                 {
                   required: true,
@@ -100,10 +103,10 @@ const Login = (prop: any) => {
               // help={account.errorMsg || ' '}
             >
               <Input
-                value={param.account}
+                value={param.email}
                 placeholder={formatMessage({ id: 'msg.inputAccount' })}
                 onChange={e => {
-                  setParam({ ...param, account: e.target.value });
+                  setParam({ ...param, email: e.target.value });
                 }}
                 autoComplete="current-account"
               />
@@ -111,7 +114,7 @@ const Login = (prop: any) => {
             {/* 密碼 */}
             <Form.Item
               name="password"
-              label={formatMessage({ id: 'login.password' })}
+              label={formatMessage({ id: 'signIn.password' })}
               rules={[
                 {
                   required: true,
@@ -135,7 +138,7 @@ const Login = (prop: any) => {
             {/* 送出 */}
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
-                Login
+                SignIn
               </Button>
             </Form.Item>
           </Form>
@@ -146,19 +149,19 @@ const Login = (prop: any) => {
 };
 
 // ============================================================================
-const mapStateToProps = ({ userReducer }: any) => {
+const mapStateToProps = ({ authReducer }: any) => {
   return {
-    userInfo: userReducer.get('userInfo'),
+    userInfo: authReducer.get('userInfo'),
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
     {
-      SetUserInfo: setUserInfo,
+      SetAuthInfo: setAuthInfo,
     },
     dispatch
   );
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignIn));

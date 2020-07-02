@@ -66,5 +66,5 @@
   "engines": {
     "node": ">= 12.16.1"
   },
-  "proxy": "http://localhost:1314"
+  "proxy": "https://csofans.ap.ngrok.io/api/"
 }

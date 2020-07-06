@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 import setAuthInfo from 'Store/actions/auth';
 import $api from 'plugins/api';
 import Paths from 'plugins/route/paths';
@@ -34,7 +34,18 @@ const SignIn = (prop: any) => {
   const history = useHistory(); // 路由
 
   // params 取參數  設定參數
-  const [params, setParam] = useState({ email: '', password: '' });
+  const signInInfo = cloneDeep(localStorage.getObjectHash('signInInfo'));
+  const [params, setParam] = useState(
+    signInInfo? {
+          email: signInInfo.email,
+          password: signInInfo.password,
+        }
+      : {
+          email: '',
+          password: '',
+        }
+  );
+  const [status, setStatus] = useState({ rememberMe: false });
 
   // 畫面結構 ------------------------------------------------------------------
   const layout = {
@@ -48,11 +59,16 @@ const SignIn = (prop: any) => {
   // Method -------------------------------------------------------------------
   // 登入 API
   const ApiSignIn = async () => {
+    localStorage.clear();
+    if (status.rememberMe) {
+      localStorage.setObjectHash('signInInfo', params); // 記住我
+    }
     const {
       data,
       status: { code },
     }: any = await $api.SignIn(params);
     if (code === 0) {
+      localStorage.setObjectHash('autInfo', data); // 記住我
       SetAuthInfo(data);
       history.push(Paths.Dashboard);
     }
@@ -68,7 +84,14 @@ const SignIn = (prop: any) => {
     // message.error('請填入資料');
   };
 
+  // 記住我 改變
+  const onRememberMeChange = (e: any) => {
+    // console.log("eee", e)
+    setStatus({ ...status, rememberMe: e.target.checked });
+  };
+
   // Randor -------------------------------------------------------------------
+
   return (
     <div id="signIn" style={{ backgroundImage: `url(${imgUrl.backimg})` }}>
       <div className="signIn-area">
@@ -79,7 +102,6 @@ const SignIn = (prop: any) => {
             <img className="logo-image" src={imgUrl.logo} alt="Background" />
             <div className="text"> 管理後台 </div>
           </div>
-          {/* <div>{JSON.stringify(authInfo)}</div> */}
         </div>
         <div className="line"> </div>
         <div className="line-text"> 一般登入 </div>
@@ -90,7 +112,6 @@ const SignIn = (prop: any) => {
           name="basic"
           colon={false} // 冒號
           hideRequiredMark // 必填＊隱藏
-          initialValues={{ rememberCheckBox: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -108,7 +129,7 @@ const SignIn = (prop: any) => {
             // help={account.errorMsg || ' '}
           >
             <Input
-              value={params.email}
+              defaultValue={params.email}
               placeholder={formatMessage({ id: 'msg.inputEmail' })}
               onChange={e => {
                 setParam({ ...params, email: e.target.value });
@@ -118,6 +139,7 @@ const SignIn = (prop: any) => {
           </Form.Item>
           {/* 密碼 */}
           <Form.Item
+            className="g-padding-top-5"
             name="password"
             label="密碼"
             rules={[
@@ -128,7 +150,7 @@ const SignIn = (prop: any) => {
             ]}
           >
             <Input.Password
-              value={params.password}
+              defaultValue={params.password}
               placeholder={formatMessage({ id: 'msg.inputPassword' })}
               autoComplete="current-password"
               onChange={e => {
@@ -136,16 +158,18 @@ const SignIn = (prop: any) => {
               }}
             />
           </Form.Item>
+          <div className="g-padding-top-5" />
           <Button type="primary" htmlType="submit" block>
             登入
           </Button>
           {/* 記住我 */}
-          <Form.Item
-            {...tailLayout}
-            name="rememberCheckBox"
-            valuePropName="checked"
-          >
-            <Checkbox>記住我</Checkbox>
+          <Form.Item {...tailLayout} className="g-padding-top-10">
+            <Checkbox
+              defaultChecked={status.rememberMe}
+              onChange={onRememberMeChange}
+            >
+              記住我
+            </Checkbox>
           </Form.Item>
           {/* 送出 */}
         </Form>

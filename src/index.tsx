@@ -11,6 +11,7 @@ import store from 'Store';
 import App from 'App';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
+import 'plugins/hashStorage';
 // eslint-disable-next-line import/no-unresolved
 
 setConfig({

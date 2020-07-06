@@ -10,15 +10,17 @@ const UnMount = () => {
 const Mount = () => {
   useEffect(() => {
     return UnMount;
-  }, []);
+  });
 };
 
 const Dashboard = (prop: any) => {
   const { routes } = prop;
+  const aa = localStorage.getObjectHash('autInfo');
   Mount();
   return (
     <div>
       <Menutest />
+      <div>{JSON.stringify(aa)}</div>
       <h1>Dashboarda</h1>
       {RouteHander(routes)}
     </div>

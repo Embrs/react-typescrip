@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -22,7 +22,6 @@ import './style.scss';
 //     errorMsg: '請輸入',
 //   };
 // };
-
 // Main ======================================================================
 const SignIn = (prop: any) => {
   const { SetAuthInfo, imgUrl } = prop; // auth info
@@ -35,17 +34,18 @@ const SignIn = (prop: any) => {
 
   // params 取參數  設定參數
   const signInInfo = cloneDeep(localStorage.getObjectHash('signInInfo'));
-  const [params, setParam] = useState(
-    signInInfo? {
-          email: signInInfo.email,
-          password: signInInfo.password,
-        }
-      : {
-          email: '',
-          password: '',
-        }
-  );
-  const [status, setStatus] = useState({ rememberMe: false });
+  const [params, setParam] = useState(() => {
+    if (signInInfo) {
+      return signInInfo;
+    }
+    return { email: '', password: '' };
+  });
+  const [status, setStatus] = useState(() => {
+    if (signInInfo) {
+      return { rememberMe: true };
+    }
+    return { rememberMe: false };
+  });
 
   // 畫面結構 ------------------------------------------------------------------
   const layout = {
@@ -57,6 +57,7 @@ const SignIn = (prop: any) => {
   };
 
   // Method -------------------------------------------------------------------
+
   // 登入 API
   const ApiSignIn = async () => {
     localStorage.clear();
@@ -69,7 +70,7 @@ const SignIn = (prop: any) => {
     }: any = await $api.SignIn(params);
     if (code === 0) {
       localStorage.setObjectHash('autInfo', data); // 記住我
-      SetAuthInfo(data);
+      // SetAuthInfo(data);
       history.push(Paths.Dashboard);
     }
   };
@@ -96,6 +97,7 @@ const SignIn = (prop: any) => {
     <div id="signIn" style={{ backgroundImage: `url(${imgUrl.backimg})` }}>
       <div className="signIn-area">
         {/* icon */}
+        <div>{JSON.stringify(params)}</div>
         <div className="icon">
           <img className="icon-image" src={imgUrl.icon} alt="Background" />
           <div className="logo">
@@ -114,6 +116,10 @@ const SignIn = (prop: any) => {
           hideRequiredMark // 必填＊隱藏
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          initialValues={{
+            email: params.email,
+            password: params.password,
+          }}
         >
           {/* 信箱 */}
           <Form.Item
@@ -121,15 +127,16 @@ const SignIn = (prop: any) => {
             label="信箱"
             rules={[
               {
+                type: 'email',
+                message: 'E-mail 結構錯誤',
+              },
+              {
                 required: true,
-                message: <FormattedMessage id="msg.inputEmail" />,
+                message: '請輸入 E-mail',
               },
             ]}
-            // validateStatus={account.validateStatus}
-            // help={account.errorMsg || ' '}
           >
             <Input
-              defaultValue={params.email}
               placeholder={formatMessage({ id: 'msg.inputEmail' })}
               onChange={e => {
                 setParam({ ...params, email: e.target.value });
@@ -144,13 +151,13 @@ const SignIn = (prop: any) => {
             label="密碼"
             rules={[
               {
+                type: 'string',
                 required: true,
                 message: <FormattedMessage id="msg.inputPassword" />,
               },
             ]}
           >
             <Input.Password
-              defaultValue={params.password}
               placeholder={formatMessage({ id: 'msg.inputPassword' })}
               autoComplete="current-password"
               onChange={e => {
